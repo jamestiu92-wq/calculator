@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f7f6;
+        }
+
+        .calculator {
+            width: 320px;
+            background-color: #1e293b;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        #display {
+            width: 100%;
+            height: 70px;
+            background-color: #0f172a;
+            border: none;
+            outline: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #ffffff;
+            font-size: 2rem;
+            text-align: right;
+            padding: 10px 15px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        button {
+            padding: 18px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            background-color: #334155;
+            color: #f8fafc;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button.operator {
+            background-color: #f97316;
+            color: white;
+        }
+
+        button.operator:hover {
+            background-color: #ea580c;
+        }
+
+        button.clear {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        button.clear:hover {
+            background-color: #dc2626;
+        }
+
+        button.equal {
+            grid-column: span 2;
+            background-color: #10b981;
+            color: white;
+        }
+
+        button.equal:hover {
+            background-color: #059669;
+        }
+
+        button:hover:not(.operator):not(.clear):not(.equal) {
+            background-color: #475569;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <input type="text" id="display" readonly placeholder="0">
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button onclick="appendValue('/')" class="operator">÷</button>
+            <button onclick="appendValue('*')" class="operator">×</button>
+            <button onclick="deleteLast()">⌫</button>
+            
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('-')" class="operator">-</button>
+            
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="appendValue('+')" class="operator">+</button>
+            
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="calculate()" class="equal">=</button>
+            
+            <button onclick="appendValue('0')" style="grid-column: span 2;">0</button>
+            <button onclick="appendValue('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        function appendValue(val) {
+            // Prevent leading multiple zeros or operators
+            if (display.value === '' && ['+', '*', '/'].includes(val)) return;
+            display.value += val;
+        }
+
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        厳しい
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            try {
+                // Using Function instead of eval for a slight safety buffer in simple contexts
+                if (display.value) {
+                    display.value = Function('"use strict";return (' + display.value + ')')();
+                }
+            } catch (error) {
+                display.value = 'Error';
+                setTimeout(clearDisplay, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
