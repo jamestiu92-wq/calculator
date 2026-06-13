@@ -3,114 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist Calculator</title>
+    <title>Sleek Minimalist Calculator</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f4f7f6;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        .header-name {
+            position: absolute;
+            top: 40px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.75rem;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            user-select: none;
         }
 
         .calculator {
-            width: 320px;
-            background-color: #1e293b;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 340px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 24px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin-top: 60px; /* Ensures clearance from the header on smaller screens */
+        }
+
+        .display-container {
+            margin-bottom: 24px;
+            position: relative;
         }
 
         #display {
             width: 100%;
-            height: 70px;
-            background-color: #0f172a;
-            border: none;
+            height: 90px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             outline: none;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            color: #ffffff;
-            font-size: 2rem;
+            border-radius: 16px;
+            color: #f8fafc;
+            font-size: 2.5rem;
+            font-weight: 300;
             text-align: right;
-            padding: 10px 15px;
+            padding: 12px 20px;
+            letter-spacing: -1px;
+            transition: all 0.2s ease;
+        }
+
+        #display::placeholder {
+            color: #475569;
         }
 
         .buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 14px;
         }
 
         button {
-            padding: 18px;
-            font-size: 1.25rem;
-            font-weight: 600;
+            padding: 20px 0;
+            font-size: 1.35rem;
+            font-weight: 500;
             border: none;
-            border-radius: 8px;
+            border-radius: 14px;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            background-color: #334155;
-            color: #f8fafc;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: rgba(51, 65, 85, 0.5);
+            color: #e2e8f0;
+            user-select: none;
+        }
+
+        button:hover {
+            background-color: rgba(71, 85, 105, 0.7);
+            color: #ffffff;
+            transform: translateY(-2px);
         }
 
         button:active {
-            transform: scale(0.95);
+            transform: translateY(1px) scale(0.98);
         }
 
+        /* Operator buttons styling */
         button.operator {
-            background-color: #f97316;
-            color: white;
+            background-color: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+            font-weight: 600;
         }
 
         button.operator:hover {
-            background-color: #ea580c;
+            background-color: #6366f1;
+            color: white;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
         }
 
+        /* Utility buttons styling */
         button.clear {
-            background-color: #ef4444;
-            color: white;
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #f87171;
         }
 
         button.clear:hover {
-            background-color: #dc2626;
+            background-color: #ef4444;
+            color: white;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
         }
 
+        button.backspace {
+            background-color: rgba(100, 116, 139, 0.2);
+            color: #94a3b8;
+        }
+
+        /* Equals button styling */
         button.equal {
-            grid-column: span 2;
             background-color: #10b981;
             color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
 
         button.equal:hover {
             background-color: #059669;
-        }
-
-        button:hover:not(.operator):not(.clear):not(.equal) {
-            background-color: #475569;
+            box-shadow: 0 0 18px rgba(16, 185, 129, 0.5);
         }
     </style>
 </head>
 <body>
 
+    <h1 class="header-name">James Ryan Y. Tiu</h1>
+
     <div class="calculator">
-        <input type="text" id="display" readonly placeholder="0">
+        <div class="display-container">
+            <input type="text" id="display" readonly placeholder="0">
+        </div>
         <div class="buttons">
             <button class="clear" onclick="clearDisplay()">C</button>
             <button onclick="appendValue('/')" class="operator">÷</button>
             <button onclick="appendValue('*')" class="operator">×</button>
-            <button onclick="deleteLast()">⌫</button>
+            <button class="backspace" onclick="deleteLast()">⌫</button>
             
             <button onclick="appendValue('7')">7</button>
             <button onclick="appendValue('8')">8</button>
             <button onclick="appendValue('9')">9</button>
-            <button onclick="appendValue('-')" class="operator">-</button>
+            <button onclick="appendValue('-')" class="operator">−</button>
             
             <button onclick="appendValue('4')">4</button>
             <button onclick="appendValue('5')">5</button>
@@ -131,8 +184,8 @@
         const display = document.getElementById('display');
 
         function appendValue(val) {
-            // Prevent leading multiple zeros or operators
-            if (display.value === '' && ['+', '*', '/'].includes(val)) return;
+            if (display.value === '' && ['+', '*', '/', '-'].includes(val)) return;
+            if (val === '.' && display.value.endsWith('.')) return;
             display.value += val;
         }
 
@@ -140,22 +193,21 @@
             display.value = '';
         }
 
-        厳しい
         function deleteLast() {
             display.value = display.value.slice(0, -1);
         }
 
         function calculate() {
             try {
-                // Using Function instead of eval for a slight safety buffer in simple contexts
                 if (display.value) {
-                    display.value = Function('"use strict";return (' + display.value + ')')();
+                    const result = Function('"use strict";return (' + display.value + ')')();
+                    display.value = Number(Math.round(result + 'e12') + 'e-12') || result;
                 }
             } catch (error) {
                 display.value = 'Error';
-                setTimeout(clearDisplay, 1500);
+                setTimeout(clearDisplay, 1300);
             }
         }
     </script>
 </body>
-</html>
+</html>         
